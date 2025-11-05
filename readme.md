@@ -46,6 +46,40 @@ This allows the model to correctly distinguish relationships such as:
 
 ---
 
+## Input Data Requirements
+
+Before running any training or matching workflows, you must provide a file named **`companies.xlsx`** in the project’s working directory.
+
+### Expected File Format
+
+| Column Name   | Description |
+|---------------|-------------|
+| `ID`          | A unique identifier for each company (string or integer). |
+| `CompanyName` | The company name as it should be interpreted by the model. |
+
+Example:
+
+| ID  | CompanyName           |
+|-----|-----------------------|
+| 101 | Acme Holdings LLC     |
+| 102 | Blue River Logistics  |
+| 103 | Acme Capital Partners |
+
+### Workflow
+
+1. Place your `companies.xlsx` file at the root of the project.
+2. Open and run the notebook **`build-training-data.ipynb`**:
+   - This script will generate a training dataset containing:
+     - Positive match pairs (same company under different naming patterns)
+     - Hard negative pairs (similar structure but different entities)
+     - Suffix and prefix-aware variations (`Inc`, `LLC`, `Ltd`, etc.)
+3. After the training data is generated, run **`fine-tune-model.ipynb`** to create your domain-optimized similarity model.
+
+Once fine-tuning completes, the resulting model can be used in the **semantic matching** notebook to score and compare company names.
+
+
+---
+
 ## Example Usage
 
 ```python
